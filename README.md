@@ -12,7 +12,7 @@ Alternatively, you can setup the project on your own computer by following the d
     We have successfully run this project on npm version of 8.19.3 and higher.
 
 2.  **Clone repository**
-    `git clone https://github.com/randi-c-dubs/reflection_chatbot.git`
+    `git clone https://github.com/mitmedialab/sparki.git`
 
 3.  **Setup and build repository**
 
@@ -27,7 +27,7 @@ Alternatively, you can setup the project on your own computer by following the d
     ```
 
 4.  **Deploy project**
-    _Warning: running this code from any branch will replace the contents of the [live site](https://randi-c-dubs.github.io/reflection_chatbot/) of this repository._
+    _Warning: running this code from any branch will replace the contents of the [live site](https://mitmedialab.github.io/sparki/) of this repository._
     This was setup by following [Github's react-gh-pages](https://github.com/gitname/react-gh-pages) instructions.
 
         ```
