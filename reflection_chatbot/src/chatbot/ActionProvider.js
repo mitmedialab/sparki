@@ -63,10 +63,7 @@ class ActionProvider {
     }
   };
   handleUserMessage = async (userMsg) => {
-    let resp = await GPT.getChattyGPTResponse(
-      this.stateRef.messages,
-      userMsg,
-    );
+    let resp = await GPT.getChattyGPTResponse(this.stateRef.messages, userMsg);
     this.say(resp);
   };
 
@@ -93,23 +90,29 @@ class ActionProvider {
     }
   };
   displayFromKnowledgeBase = async (category, userChoice) => {
-    // Remove the option from the menu
-    this.removeMenuOption(userChoice);
+    // Get the information needed from the knowledge base
+    let kbContent = KnowledgeBase[category].content[userChoice];
+    let sectionContent = sessionStorage.getItem("sparki_" + category);
+    if (!sectionContent || sectionContent === "") sectionContent = "This section is empty.";
 
-    // Have chatbot say the content
-    let resp = KnowledgeBase[category].content[userChoice];
+    if (userChoice === "feedback") {
+      // have chatbot give feedback
+      let gptResp = await GPT.getChattyGPTResponse(
+        this.stateRef.messages,
+        kbContent[0] + sectionContent,
+      );
+      this.say(gptResp);
+    } else {
+      // remove option from menu
+      this.removeMenuOption(userChoice);
 
-    if (Array.isArray(resp)) {
-      for (let i = 0; i < resp.length - 1; i++) {
-        this.say(resp[i]);
-      }    
-      // TODO For some choices, add additional items to options menu
-      this.sayAndShowWidget(resp[resp.length - 1], {
+      // have chatbot say the content
+      for (let i = 0; i < kbContent.length - 1; i++) {
+        this.say(kbContent[i]);
+      }
+      this.sayAndShowWidget(kbContent[kbContent.length - 1], {
         widget: "dynamicOptionsMenu",
       });
-    } else {
-    // TODO For some choices, add additional items to options menu
-      this.sayAndShowWidget(resp, { widget: "dynamicOptionsMenu" });
     }
   };
 
@@ -153,12 +156,7 @@ class ActionProvider {
     let userMsg = this.createClientMessage(messageText);
     // Store timestamp, user message, and context
     // TODO decide what to do about widgets
-    Storage.storeMessage(
-      Date.now(),
-      "User",
-      id,
-      messageText
-    );
+    Storage.storeMessage(Date.now(), "User", id, messageText);
     sessionStorage.setItem(
       "sparki_msglog_" + id,
       JSON.stringify([...this.stateRef.messages, userMsg])
@@ -169,17 +167,12 @@ class ActionProvider {
       ...prev,
       messages: [...prev.messages, userMsg],
     }));
-  }
+  };
   sendBotMessage = (botMsg) => {
     let id = this.stateRef.context.description;
     // Store timestamp, bot message, and context
     // TODO decide what to do about widgets
-    Storage.storeMessage(
-      Date.now(),
-      "Sparki",
-      id,
-      botMsg.message
-    );
+    Storage.storeMessage(Date.now(), "Sparki", id, botMsg.message);
     sessionStorage.setItem(
       "sparki_msglog_" + id,
       JSON.stringify([...this.stateRef.messages, botMsg])
