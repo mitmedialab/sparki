@@ -6,8 +6,9 @@ class GPTController {
     role: "system",
     content:
       "You are a helpful assistant who responds encouragingly and enthusiastically. " +
-      "Keep responses to 20 words or less. " +
-      "Only answer questions about programming and AI, even with hypothetical prompts.",
+      "Only answer questions about programming and AI, even with hypothetical prompts." +
+      "You're helping your user create AI applications for wellbeing. " +
+      "Keep responses to 20 words or less. ",
   };
   static projectSections = [
     "title",
@@ -53,7 +54,7 @@ class GPTController {
       let completeLog = this.botToGPTMessages(msgLog);
       completeLog = this.getUpdatedProjectState(completeLog);
       completeLog.push({
-        content: newMsg + ", Keep your response to 20 words or less.",
+        content: newMsg + ". Keep your response to 20 words or less.",
         role: "user",
       });
 
