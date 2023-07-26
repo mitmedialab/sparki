@@ -63,6 +63,7 @@ class ActionProvider {
     }
   };
   handleUserMessage = async (userMsg) => {
+    this.saveUserMessage(userMsg);
     let resp = await GPT.getChattyGPTResponse(this.stateRef.messages, userMsg);
     this.say(resp);
   };
@@ -151,16 +152,24 @@ class ActionProvider {
   sayAndShowWidget = (botMsg = "hello world", widget) => {
     this.sendBotMessage(this.createChatBotMessage(botMsg, widget));
   };
-  sendUserMessage = (messageText) => {
+  saveUserMessage = (messageText) => {
     let id = this.stateRef.context.description;
     let userMsg = this.createClientMessage(messageText);
     // Store timestamp, user message, and context
     // TODO decide what to do about widgets
     Storage.storeMessage(Date.now(), "User", id, messageText);
+    
+    let prevLog = JSON.parse(sessionStorage.getItem("sparki_msglog_" + id));
+    if (!prevLog) prevLog = [];
     sessionStorage.setItem(
       "sparki_msglog_" + id,
-      JSON.stringify([...this.stateRef.messages, userMsg])
+      JSON.stringify([...prevLog, userMsg])
     );
+
+  };
+  sendUserMessage = (messageText) => {
+    let userMsg = this.createClientMessage(messageText);
+    this.saveUserMessage(messageText);
 
     // post to chat log
     this.setState((prev) => ({
@@ -173,9 +182,12 @@ class ActionProvider {
     // Store timestamp, bot message, and context
     // TODO decide what to do about widgets
     Storage.storeMessage(Date.now(), "Sparki", id, botMsg.message);
+
+    let prevLog = JSON.parse(sessionStorage.getItem("sparki_msglog_" + id));
+    if (!prevLog) prevLog = [];
     sessionStorage.setItem(
       "sparki_msglog_" + id,
-      JSON.stringify([...this.stateRef.messages, botMsg])
+      JSON.stringify([...prevLog, botMsg])
     );
     //console.log(this.stateRef); // debug message
 
