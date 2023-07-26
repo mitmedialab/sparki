@@ -12,6 +12,7 @@ import "./App.css";
 
 function App() {
   const [apiKey, setApiKey] = useState(Accounts.getSecretKey());
+  const saveInterval = setInterval(Storage.uploadLog, 60 * 1000);
 
   useEffect(() => {
     // clear session storage at start
@@ -25,17 +26,14 @@ function App() {
   }, []);
 
   const endSession = () => {
+    clearInterval(saveInterval);
     Storage.uploadLog();
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        {apiKey ? (
-          <ProjectDescription />
-        ) : (
-          <Login updateApiKey={setApiKey}/>
-        )}
+        {apiKey ? <ProjectDescription /> : <Login updateApiKey={setApiKey} />}
       </header>
     </div>
   );

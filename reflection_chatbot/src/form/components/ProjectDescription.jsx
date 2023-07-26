@@ -100,7 +100,7 @@ const ProjectDescription = () => {
             />
           </div>
         </div>
-        <button
+        {/*<button
           className="btn btn-primary btn-large"
           size="lg"
           disabled={formStatus !== "Save"}
@@ -108,7 +108,7 @@ const ProjectDescription = () => {
           onClick={onSave}
         >
           {formStatus}
-        </button>
+            </button>*/}
       </div>
     </div>
   );

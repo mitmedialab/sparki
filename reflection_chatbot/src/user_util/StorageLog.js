@@ -9,35 +9,34 @@ class StorageLog {
   static storageRef;
   static msgLog;
 
-  static init = (accountName) => {
+  static init = async (accountName) => {
     StorageLog.startTime = Date.now();
     StorageLog.msgLog = [];
 
     const firebaseConfig = {
       storageBucket: "gs://sparki-64d46.appspot.com",
-      apiKey: "AIzaSyDbbVkpG1nPShBaZKgIkw30KCik4mR2DZg"
+      apiKey: "AIzaSyDbbVkpG1nPShBaZKgIkw30KCik4mR2DZg",
     };
 
     // initialize Firebase app
     const app = initializeApp(firebaseConfig);
 
     // initialize Firebase auth
-    const auth = getAuth(app);
-    signInAnonymously(auth)
-      .then(() => {
-        // console.log("Anonymous Firebase login successful"); // debug message
-        // initialize Cloud Storage
-        const storage = getStorage(app);
-        const storagePath =
-          accountName +
-          "/sparkilog-" +
-          StorageLog.dateString(StorageLog.startTime) +
-          ".json";
-        StorageLog.storageRef = ref(storage, storagePath);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const auth = getAuth(app);
+      await signInAnonymously(auth);
+
+      const storage = getStorage(app);
+      const storagePath =
+        accountName +
+        "/sparkilog-" +
+        StorageLog.dateString(StorageLog.startTime) +
+        ".json";
+      StorageLog.storageRef = ref(storage, storagePath);
+    } catch (error) {
+      console.error("Error initializing Firebase");
+      console.error(error);
+    }
   };
 
   static dateString = (date) => {
@@ -81,7 +80,12 @@ class StorageLog {
     const sessionLog = JSON.stringify(sessionObj);
     localStorage.setItem("Sparki_log", sessionLog);
 
-    uploadString(StorageLog.storageRef, sessionLog);
+    try {
+      uploadString(StorageLog.storageRef, sessionLog);
+    } catch (err) {
+      console.error("Error uploading new content to firebase");
+      console.error(err);
+    }
   };
 }
 

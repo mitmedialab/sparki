@@ -30,12 +30,12 @@ class Accounts {
 
           // setup GPT and storage
           GPT.setApiKey(account.openAIKey, false);
-          Storage.init(username);
+          await Storage.init(username);
 
           return account;
         } catch (e) {
           console.error(
-            "There was an error getting account info. Contact administrator to fix account."
+            "There was an error getting account info. Contact administrator to fix your account."
           );
           console.log(e);
         }
