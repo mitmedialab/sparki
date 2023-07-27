@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/sparki/ai-project/static/css/main.53cfe0ae.css",
-    "main.js": "/sparki/ai-project/static/js/main.83a63e1e.js",
+    "main.js": "/sparki/ai-project/static/js/main.be1372b3.js",
     "static/js/787.bc74c74e.chunk.js": "/sparki/ai-project/static/js/787.bc74c74e.chunk.js",
     "static/media/bootstrap-icons.woff?": "/sparki/ai-project/static/media/bootstrap-icons.6959d0d983ee318f8880.woff",
     "static/media/bootstrap-icons.woff2?": "/sparki/ai-project/static/media/bootstrap-icons.b2e5aab643c6f0fd2da6.woff2",
@@ -11,11 +11,11 @@
     "static/media/help-2-ethics-icon.png": "/sparki/ai-project/static/media/help-2-ethics-icon.0f00ff3a3f81addb7837.png",
     "index.html": "/sparki/ai-project/index.html",
     "main.53cfe0ae.css.map": "/sparki/ai-project/static/css/main.53cfe0ae.css.map",
-    "main.83a63e1e.js.map": "/sparki/ai-project/static/js/main.83a63e1e.js.map",
+    "main.be1372b3.js.map": "/sparki/ai-project/static/js/main.be1372b3.js.map",
     "787.bc74c74e.chunk.js.map": "/sparki/ai-project/static/js/787.bc74c74e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.53cfe0ae.css",
-    "static/js/main.83a63e1e.js"
+    "static/js/main.be1372b3.js"
   ]
 }
