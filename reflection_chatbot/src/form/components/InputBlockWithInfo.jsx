@@ -1,20 +1,14 @@
 import React, { useMemo } from "react";
 import Spinner from "react-bootstrap/Spinner";
 
-import Chatbot from "react-chatbot-kit";
-import { createChatBotMessage } from "react-chatbot-kit";
-
 import debounce from "lodash.debounce";
 
-import ActionProvider from "../../chatbot/ActionProvider";
-import MessageParser from "../../chatbot/MessageParser";
-import config from "../../chatbot/config";
-import KnowledgeBase from "../../chatbot/resources/KnowledgeBase";
-
 import "react-chatbot-kit/build/main.css";
-import "./InputBlockWithChat.css";
+import "./InputBlockWithInfo.css";
 
-const InputBlockWithChat = ({
+import KnowledgeBase from "../../chatbot/resources/KnowledgeBase"
+
+const InputBlockWithInfo = ({
   inputType,
   label,
   id,
@@ -22,42 +16,22 @@ const InputBlockWithChat = ({
   onChange,
 }) => {
   const [buttonStatus, setButtonStatus] = React.useState("visible"); // loading / visible
-  const [chatStatus, setChatStatus] = React.useState("hidden"); // hidden / loading / visible
+  const [chatStatus, setChatStatus] = React.useState("hidden"); // hidden / visible
   
-  let initialMsg, initialContext, initialMenu;
   // setup the chatbot with the appropriate initializations
   if (id in KnowledgeBase) {
-    initialMsg = KnowledgeBase[id].initialChatMessage;
-    initialContext = KnowledgeBase[id].initialChatContext;
-    initialMenu = KnowledgeBase[id].initialChatMenu;
+    // TODO autopopulate a collabsible list of questions and answers
   } else {
     console.error("Got an invalid id on input block");
     console.error(id);
   }
 
-  config.initialMessages = [
-    createChatBotMessage(initialMsg, { widget: "dynamicOptionsMenu" }),
-  ];
-  config.state.context = initialContext;
-  config.state.menuOptions = initialMenu;
-
-  const loadMessages = () => {
-    let oldMessages = sessionStorage.getItem("sparki_msglog_" + id);
-    return JSON.parse(oldMessages);
-  };
-  // BUG Never seems to fire
-  const saveMessageHandler = (messages) => {
-    console.log("Saving previous messages");
-  };
-
   const onChangeHandler = () => {
     if (chatStatus === "hidden") setButtonStatus("loading");
-    else if (chatStatus === "visible") setChatStatus("loading");
   };
   const onInputValueEdited = (e) => {
     // make chat and button visible
     setButtonStatus("visible");
-    if (chatStatus === "loading") setChatStatus("visible");
     
     // call parent on change
     onChange(e);
@@ -144,14 +118,7 @@ const InputBlockWithChat = ({
         /* Chatbot component */
         chatStatus !== "hidden" && (
           <div>
-            <Chatbot
-              className="chat"
-              config={config}
-              actionProvider={ActionProvider}
-              messageParser={MessageParser}
-              messageHistory={loadMessages()}
-              saveMessages={saveMessageHandler}
-            />
+            <div className="chat" />
             {chatStatus === "loading" && (
               <div className="chat-overlay">
                 <Spinner
@@ -167,4 +134,4 @@ const InputBlockWithChat = ({
     </div>
   );
 };
-export default InputBlockWithChat;
+export default InputBlockWithInfo;
