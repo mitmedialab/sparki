@@ -1,12 +1,11 @@
 import React, { useMemo } from "react";
-import Spinner from "react-bootstrap/Spinner";
+import Accordion from "react-bootstrap/Accordion";
 
 import debounce from "lodash.debounce";
 
-import "react-chatbot-kit/build/main.css";
 import "./InputBlockWithInfo.css";
 
-import KnowledgeBase from "../../chatbot/resources/KnowledgeBase"
+import KnowledgeBase from "../../chatbot/resources/KnowledgeBase";
 
 const InputBlockWithInfo = ({
   inputType,
@@ -16,35 +15,32 @@ const InputBlockWithInfo = ({
   onChange,
 }) => {
   const [buttonStatus, setButtonStatus] = React.useState("visible"); // loading / visible
-  const [chatStatus, setChatStatus] = React.useState("hidden"); // hidden / visible
-  
-  // setup the chatbot with the appropriate initializations
-  if (id in KnowledgeBase) {
-    // TODO autopopulate a collabsible list of questions and answers
-  } else {
+  const [infoboxStatus, setInfoboxStatus] = React.useState("hidden"); // hidden / visible
+
+  if (!id in KnowledgeBase) {
     console.error("Got an invalid id on input block");
     console.error(id);
   }
 
   const onChangeHandler = () => {
-    if (chatStatus === "hidden") setButtonStatus("loading");
+    if (infoboxStatus === "hidden") setButtonStatus("loading");
   };
   const onInputValueEdited = (e) => {
-    // make chat and button visible
+    // make infobox and button visible
     setButtonStatus("visible");
-    
+
     // call parent on change
     onChange(e);
   };
   const debouncedChangeHandler = useMemo(
     () => debounce(onInputValueEdited, 300),
-    [chatStatus]
+    [infoboxStatus]
   );
 
-  const onChatButtonClick = () => {
-    // change visibillity of bot
-    if (chatStatus === "hidden") setChatStatus("visible");
-    else setChatStatus("hidden");
+  const onInfoboxButtonClick = () => {
+    // change visibillity of infobox
+    if (infoboxStatus === "hidden") setInfoboxStatus("visible");
+    else setInfoboxStatus("hidden");
   };
   const elementLostFocus = (e) => {
     // From https://muffinman.io/blog/catching-the-blur-event-on-an-element-and-its-children/
@@ -54,7 +50,7 @@ const InputBlockWithInfo = ({
     requestAnimationFrame(() => {
       // Check if the new focused element is a child of the original container
       if (!currentTarget.contains(document.activeElement))
-        setChatStatus("hidden");
+        setInfoboxStatus("hidden");
     });
   };
   return (
@@ -92,43 +88,52 @@ const InputBlockWithInfo = ({
         }[inputType]
       }
       {
-        /* Chatbot open button */
+        /* Info open button */
         {
           visible: (
             <button
-              className="chatbot-btn btn btn-primary"
+              className="infobox-btn btn btn-primary"
               type="button"
-              onClick={onChatButtonClick}
+              onClick={onInfoboxButtonClick}
             >
-              <i className="bi bi-chat-right-dots-fill" />
+              <i class="bi bi-patch-question-fill" />
             </button>
           ),
           loading: (
             <button
-              className="chatbot-btn btn btn-primary"
+              className="infobox-btn btn btn-primary"
               type="button"
-              onClick={onChatButtonClick}
-            >
-              <Spinner animation="border" variant="light" size="sm" />
-            </button>
+              onClick={onInfoboxButtonClick}
+            ></button>
           ),
         }[buttonStatus]
       }
       {
-        /* Chatbot component */
-        chatStatus !== "hidden" && (
-          <div>
-            <div className="chat" />
-            {chatStatus === "loading" && (
-              <div className="chat-overlay">
-                <Spinner
-                  className="chat-overlay-spinner"
-                  animation="border"
-                  variant="primary"
-                />
-              </div>
-            )}
-          </div>
+        /* Info component */
+        infoboxStatus !== "hidden" && (
+          <Accordion>
+            <Accordion.Item
+              eventKey={KnowledgeBase[id]["contentHeaders"].length}
+            >
+              <Accordion.Header>Progress checklist</Accordion.Header>
+              <Accordion.Body>
+                Complete all tasks for this section:
+                <ul>
+                  {KnowledgeBase[id]["progressContent"].map((x, i) => (
+                    <li>{x}</li>
+                  ))}
+                </ul>
+              </Accordion.Body>
+            </Accordion.Item>
+            {KnowledgeBase[id]["contentHeaders"].map((x, i) => (
+              <Accordion.Item eventKey={i}>
+                <Accordion.Header>{x.text}</Accordion.Header>
+                <Accordion.Body>
+                  {KnowledgeBase[id]["content"][x.content]}
+                </Accordion.Body>
+              </Accordion.Item>
+            ))}
+          </Accordion>
         )
       }
     </div>

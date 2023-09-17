@@ -54,46 +54,22 @@
   justify-content: space-between;
 }
 
-.chatbot-btn {
+.infobox-btn {
   position: relative;
   top: -44px;
   left: calc(100% - 48px);
 }
 
-.chat-overlay {
-  position: absolute;
-  z-index: 1001;
-  width: 400px;
-  height: 15rem;
-  line-height: 15rem;
-  
-  top: 7rem;
-  right: 0;
-  background: rgba(255, 255, 255, 0.7);
-}
-
-.chat-overlay-spinner {
-  width: 4rem;
-  height: 4rem;
-}
-
 /* configuring react chatbot https://fredrikoseberg.github.io/react-chatbot-kit-docs/docs/advanced/configuring-css */
-
-.react-chatbot-kit-chat-container {
+.accordion {
   position: absolute;
   z-index: 1000;
+  width: 400px;
   top: 7rem;
   right: 0;
 }
 
-.react-chatbot-kit-chat-inner-container {
-  height: 15rem;
-}
-
-.react-chatbot-kit-chat-header {
-  display: none;
-}
-
-.react-chatbot-kit-chat-message-container {
-  height: 14.5rem;
+.accordion-body {
+  text-align:left;
+  font-size:16px;
 }

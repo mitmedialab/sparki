@@ -5,7 +5,7 @@ import KnowledgeBase from "../../chatbot/resources/KnowledgeBase";
 import Storage from "../../user_util/StorageLog";
 
 import "./ProjectDescription.css";
-import InputAndChat from "./InputBlockWithInfo";
+import InputWithInfo from "./InputBlockWithInfo";
 
 const ProjectDescription = () => {
   const [formStatus, setFormStatus] = useState("Saved");
@@ -61,7 +61,7 @@ const ProjectDescription = () => {
             debouncedChangeHandler(e);
           }}
         />
-        <InputAndChat
+        <InputWithInfo
           inputType="textarea"
           label="Description"
           id="description"
@@ -70,7 +70,7 @@ const ProjectDescription = () => {
             handleFormChange(e);
           }}
         />
-        <InputAndChat
+        <InputWithInfo
           inputType="textarea"
           label="Stakeholders"
           id="stakeholders"
@@ -83,7 +83,7 @@ const ProjectDescription = () => {
           <p className="mb-3 col-sm-12 project-sublabel">Potential Impacts</p>
 
           <div className="description-subblock col-lg-6">
-            <InputAndChat
+            <InputWithInfo
               inputType="textarea"
               label="Positive"
               id="positiveImpacts"
@@ -96,7 +96,7 @@ const ProjectDescription = () => {
             />
           </div>
           <div className="description-subblock col-lg-6">
-            <InputAndChat
+            <InputWithInfo
               inputType="textarea"
               label="Negative"
               id="negativeImpacts"
