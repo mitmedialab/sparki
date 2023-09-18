@@ -20,6 +20,10 @@
   font-size: calc(1.325rem + 0.9vw);
 }
 
+.progress-list {
+  list-style-type: square;
+}
+
 .description-block {
   width: 100%;
   height: 100%;

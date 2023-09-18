@@ -9,7 +9,9 @@ const KnowledgeBase = {
       {text: `Uses of AI for mental health`, content: `ideas`},
     ],
     progressContent: [
-
+      `Describe a project that is relevant to AI`,
+      `Clearly explain what the project does or what problem it solves`,
+      `Clearly explain where the project will be used and/or who it helps`,
     ],
     content: {
       description: `The project description describes what problem your project solves and for whom.`,
@@ -27,7 +29,8 @@ const KnowledgeBase = {
       {text: `Who are vulnerable stakeholders?`, content: `vulnerable`},
     ],
     progressContent: [
-      `My goal is to list at least three stakeholders and identify the most vulnerable stakeholders. Give me one piece of positive feedback and one piece of negative feedback on my stakeholders: `,
+      `List at least three, specific stakeholders relevant to this project`,
+      `Name at least one stakeholder that might be more vulnerable than others`,
     ],
     content: {
       stakeholders: `Stakeholders are anyone that might be interested in your project and its outcomes. Try to list at least three.`,
@@ -47,7 +50,9 @@ const KnowledgeBase = {
       {text: `How do I use design justice?`, content: `designJustice`},
     ],
     progressContent: [
-      `My goal is to list three ways my project might help people, identify who will benefit the most, and say how big my project's impact is (high, medium, or low). Give me one piece of positive feedback and one piece of negative feedback on my positive impacts: `,
+      `List at least three, specific positive impacts of your project`,
+      `Mention who is most positively impacted (hint: it should be a vulnerable stakeholder)`,
+      `State whether your project is low, medium, or high impact`,
     ],
     content: {
       positiveImpacts: `Positive impacts are ways that your project helps your stakeholders.`,
@@ -66,7 +71,9 @@ const KnowledgeBase = {
       {text: `How do I use design justice?`, content: `designJustice`},
     ],
     progressContent: [
-      `My goal is to identify three potential negative impacts of project, identify which stakeholders are most likely to be harmed, and say if this project is high or low risk. Give me one piece of positive feedback and one piece of negative feedback on my negative impacts: `
+      `List at least three, specific negative impacts of your project`,
+      `Mention who is most negatively impacted (hint: try to protect vulnerable stakeholders)`,
+      `State whether your project is low, medium, or high risk`,
     ],
     content: {
       negativeImpacts: `Negative impacts are ways that your projects might (unintentionally!) harm your stakeholders or put them at risk.`,
