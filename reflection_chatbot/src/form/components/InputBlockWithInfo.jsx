@@ -22,9 +22,6 @@ const InputBlockWithInfo = ({
     console.error(id);
   }
 
-  const onChangeHandler = () => {
-    if (infoboxStatus === "hidden") setButtonStatus("loading");
-  };
   const onInputValueEdited = (e) => {
     // make infobox and button visible
     setButtonStatus("visible");
@@ -69,7 +66,6 @@ const InputBlockWithInfo = ({
               placeholder={placeholderText}
               id={id}
               onChange={(e) => {
-                onChangeHandler();
                 debouncedChangeHandler(e);
               }}
             />
@@ -80,7 +76,6 @@ const InputBlockWithInfo = ({
               placeholder={placeholderText}
               id={id}
               onChange={(e) => {
-                onChangeHandler();
                 debouncedChangeHandler(e);
               }}
             />
@@ -99,13 +94,6 @@ const InputBlockWithInfo = ({
               <i class="bi bi-patch-question-fill" />
             </button>
           ),
-          loading: (
-            <button
-              className="infobox-btn btn btn-primary"
-              type="button"
-              onClick={onInfoboxButtonClick}
-            ></button>
-          ),
         }[buttonStatus]
       }
       {
@@ -117,8 +105,8 @@ const InputBlockWithInfo = ({
             >
               <Accordion.Header>Progress checklist</Accordion.Header>
               <Accordion.Body>
-                Complete all tasks for this section:
-                <ul>
+                Try to reach these goals:
+                <ul class="progress-list">
                   {KnowledgeBase[id]["progressContent"].map((x, i) => (
                     <li>{x}</li>
                   ))}
