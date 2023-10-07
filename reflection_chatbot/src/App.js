@@ -25,9 +25,13 @@ function App() {
     };
   }, []);
 
-  const endSession = () => {
+  const endSession = (e) => {
     clearInterval(saveInterval);
     Storage.uploadLog();
+
+    // Have page confirm before reload
+    e.preventDefault();
+    e.returnValue = "";
   };
 
   return (
