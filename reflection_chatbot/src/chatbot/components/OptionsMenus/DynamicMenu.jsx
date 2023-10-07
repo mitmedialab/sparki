@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import GenericOptionsMenu from "../GenericOptionsMenu/GenericOptionsMenu";
+import React, { useEffect, useRef, useState } from "react";
+//import GenericOptionsMenu from "../GenericOptionsMenu/GenericOptionsMenu";
+
+import "./DynamicMenu.css";
 
 const DynamicMenu = ({ menuOptions, actionProvider }) => {
   const [options, setOptions] = useState([]);
+  
   useEffect(() => {
-    if (menuOptions) {
     const newOptions = menuOptions.map((op, idx) => ({
       opText: op.text,
       opHandler: () => {
@@ -14,10 +16,23 @@ const DynamicMenu = ({ menuOptions, actionProvider }) => {
       },
       opId: idx,
     }));
+
     setOptions(newOptions);
-  }
   }, []);
-  return <GenericOptionsMenu options={options} />;
+
+  return (
+    <div className="options-container" ref={options}>
+      {options.map((option) => (
+        <button
+          key={option.opId}
+          onClick={option.opHandler}
+          className="option-button"
+        >
+          {option.opText}
+        </button>
+      ))}
+    </div>
+  );
 };
 
 export default DynamicMenu;
