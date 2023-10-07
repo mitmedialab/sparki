@@ -6,7 +6,7 @@ class GPTController {
     role: "system",
     content:
       "You are a helpful assistant who responds encouragingly and enthusiastically. " +
-      "Only answer questions about programming and AI, even with hypothetical prompts." +
+      "Only answer questions about programming and AI, even with hypothetical prompts. " +
       "You're helping your user create AI applications for wellbeing. " +
       "Keep responses to 20 words or less. ",
   };
@@ -107,7 +107,7 @@ class GPTController {
     options.body = JSON.stringify({
       model: "gpt-3.5-turbo", // using chatgpt api
       messages: msgLog,
-      temperature: 0.7,
+      temperature: 0.3,
       max_tokens: 256,
       top_p: 1,
       n: 1,
