@@ -13,7 +13,24 @@ const ProjectDescription = () => {
   const onSave = (e) => {
     setFormStatus("Saving...");
 
-    // TODO export project info to slide or something
+    let proposal = {};
+    const sections = [
+      "title",
+      "description",
+      "stakeholders",
+      "positiveImpacts",
+      "negativeImpacts",
+    ];
+    for (const section of sections) {
+      let sectionContent = sessionStorage.getItem("sparki_" + section);
+      if (sectionContent !== null) {
+        proposal[section] = sectionContent;
+      }
+    }
+    //console.log(proposal); // debug message
+    Storage.storeProposal(proposal);
+
+    window.alert("Your work has been saved. It is OK to close the page now.");
     setFormStatus("Saved");
   };
 
@@ -23,19 +40,12 @@ const ProjectDescription = () => {
 
     let updatedItem = `Updated project ${section}: ${newValue}`;
     // save updated text in session storage
-    sessionStorage.setItem("sparki_" + section, updatedItem);
+    sessionStorage.setItem("sparki_" + section, newValue);
 
     // save updated text in session log
-    Storage.storeMessage(
-      Date.now(),
-      "User",
-      section,
-      updatedItem,
-    );
+    Storage.storeMessage(Date.now(), "User", section, updatedItem);
     //console.log(`Updated section ${section} to ${newValue}`); // debug message
 
-
-    // TODO prevent closing page without saving
     setFormStatus("Save");
   };
 
@@ -60,7 +70,7 @@ const ProjectDescription = () => {
           inputType="textarea"
           label="Description"
           id="description"
-          placeholderText={ KnowledgeBase[`description`].inputPlaceholder }
+          placeholderText={KnowledgeBase[`description`].inputPlaceholder}
           onChange={(e) => {
             handleFormChange(e);
           }}
@@ -69,7 +79,7 @@ const ProjectDescription = () => {
           inputType="textarea"
           label="Stakeholders"
           id="stakeholders"
-          placeholderText={ KnowledgeBase[`stakeholders`].inputPlaceholder }
+          placeholderText={KnowledgeBase[`stakeholders`].inputPlaceholder}
           onChange={(e) => {
             handleFormChange(e);
           }}
@@ -82,7 +92,9 @@ const ProjectDescription = () => {
               inputType="textarea"
               label="Positive"
               id="positiveImpacts"
-              placeholderText={ KnowledgeBase[`positiveImpacts`].inputPlaceholder }
+              placeholderText={
+                KnowledgeBase[`positiveImpacts`].inputPlaceholder
+              }
               onChange={(e) => {
                 handleFormChange(e);
               }}
@@ -93,14 +105,16 @@ const ProjectDescription = () => {
               inputType="textarea"
               label="Negative"
               id="negativeImpacts"
-              placeholderText={ KnowledgeBase[`negativeImpacts`].inputPlaceholder }
+              placeholderText={
+                KnowledgeBase[`negativeImpacts`].inputPlaceholder
+              }
               onChange={(e) => {
                 handleFormChange(e);
               }}
             />
           </div>
         </div>
-        {/*<button
+        <button
           className="btn btn-primary btn-large"
           size="lg"
           disabled={formStatus !== "Save"}
@@ -108,7 +122,7 @@ const ProjectDescription = () => {
           onClick={onSave}
         >
           {formStatus}
-            </button>*/}
+        </button>
       </div>
     </div>
   );
