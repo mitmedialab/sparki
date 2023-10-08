@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 
 import debounce from "lodash.debounce";
@@ -14,18 +14,23 @@ const InputBlockWithInfo = ({
   placeholderText,
   onChange,
 }) => {
-  const [buttonStatus, setButtonStatus] = React.useState("visible"); // loading / visible
-  const [infoboxStatus, setInfoboxStatus] = React.useState("hidden"); // hidden / visible
+  const [infoboxStatus, setInfoboxStatus] = useState("hidden"); // hidden / visible
+  const [checked, setChecked] = useState([]);
 
-  if (!id in KnowledgeBase) {
+  if (id in KnowledgeBase === false) {
     console.error("Got an invalid id on input block");
     console.error(id);
   }
 
-  const onInputValueEdited = (e) => {
-    // make infobox and button visible
-    setButtonStatus("visible");
+  useEffect(() => {
+    let initCheckedVar = [];
+    for (let i=0; i<KnowledgeBase[id]["progressContent"].length; i++) {
+      initCheckedVar.push(false);
+    }
+    setChecked(initCheckedVar);
+  }, []);
 
+  const onInputValueEdited = (e) => {
     // call parent on change
     onChange(e);
   };
@@ -50,6 +55,16 @@ const InputBlockWithInfo = ({
         setInfoboxStatus("hidden");
     });
   };
+
+  const toggleCheckbox = (e) => {
+    let itemNum = parseInt(e.target.value.slice(-1));
+    let newCheckedVar = [...checked];
+    newCheckedVar[itemNum] = !newCheckedVar[itemNum];
+
+    //console.log(newCheckedVar); // debug message
+    setChecked(newCheckedVar);
+  };
+
   return (
     <div className="description-block" onBlur={elementLostFocus}>
       {label && (
@@ -82,20 +97,14 @@ const InputBlockWithInfo = ({
           ),
         }[inputType]
       }
-      {
-        /* Info open button */
-        {
-          visible: (
-            <button
-              className="infobox-btn btn btn-primary"
-              type="button"
-              onClick={onInfoboxButtonClick}
-            >
-              <i class="bi bi-patch-question-fill" />
-            </button>
-          ),
-        }[buttonStatus]
-      }
+      {/* Info open button */}
+      <button
+        className="infobox-btn btn btn-primary"
+        type="button"
+        onClick={onInfoboxButtonClick}
+      >
+        <i class="bi bi-patch-question-fill" />
+      </button>
       {
         /* Info component */
         infoboxStatus !== "hidden" && (
@@ -108,7 +117,19 @@ const InputBlockWithInfo = ({
                 Try to reach these goals:
                 <ul class="progress-list">
                   {KnowledgeBase[id]["progressContent"].map((x, i) => (
-                    <li>{x}</li>
+                    <li class="progress-list-item">
+                      <label htmlFor={"item" + (i + 1)}>
+                        <input
+                          type="checkbox"
+                          id={"item" + (i + 1)}
+                          key={"item" + (i + 1)}
+                          value={"item" + i}
+                          onChange={toggleCheckbox}
+                          checked={checked[i]}
+                        />
+                        {x}{" "}
+                      </label>
+                    </li>
                   ))}
                 </ul>
               </Accordion.Body>

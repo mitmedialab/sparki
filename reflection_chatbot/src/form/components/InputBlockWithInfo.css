@@ -21,7 +21,7 @@
 }
 
 .progress-list {
-  list-style-type: square;
+  list-style-type: none;
 }
 
 .description-block {
@@ -74,6 +74,10 @@
 }
 
 .accordion-body {
-  text-align:left;
-  font-size:16px;
+  text-align: left;
+  font-size: 16px;
+}
+
+.progress-list-item label input {
+  margin-right: 10px;
 }
