@@ -2,16 +2,17 @@ import { initializeApp } from "@firebase/app";
 import { getStorage, ref, uploadString } from "@firebase/storage";
 import { getAuth, signInAnonymously } from "@firebase/auth";
 
-// StorageLog manages all the functions related to keeping track of the message log and interfacing with Firebase Storage
-class StorageLog {
+// Storage manages all the functions related to keeping track of the message log and interfacing with Firebase Storage
+class Storage {
   static startTime;
   static endTime;
-  static storageRef;
+  static logStorageRef;
+  static proposalStorageRef;
   static msgLog;
 
   static init = async (accountName) => {
-    StorageLog.startTime = Date.now();
-    StorageLog.msgLog = [];
+    Storage.startTime = Date.now();
+    Storage.msgLog = [];
 
     const firebaseConfig = {
       storageBucket: "gs://sparki-64d46.appspot.com",
@@ -27,12 +28,19 @@ class StorageLog {
       await signInAnonymously(auth);
 
       const storage = getStorage(app);
-      const storagePath =
+      const logStoragePath =
         accountName +
         "/sparkilog-" +
-        StorageLog.dateString(StorageLog.startTime) +
+        Storage.dateString(Storage.startTime) +
         ".json";
-      StorageLog.storageRef = ref(storage, storagePath);
+      Storage.logStorageRef = ref(storage, logStoragePath);
+
+      const proposalStoragePath =
+        accountName +
+        "/proposal-" +
+        Storage.dateString(Storage.startTime) +
+        ".json";
+      Storage.proposalStorageRef = ref(storage, proposalStoragePath);
     } catch (error) {
       console.error("Error initializing Firebase");
       console.error(error);
@@ -58,8 +66,8 @@ class StorageLog {
 
   static storeMessage = (timestamp, author, context, message) => {
     // TODO test to make sure messages don't get dropped
-    if (StorageLog.msgLog) {
-      StorageLog.msgLog.push({
+    if (Storage.msgLog) {
+      Storage.msgLog.push({
         author,
         message,
         context,
@@ -70,23 +78,53 @@ class StorageLog {
 
   static uploadLog = () => {
     // record the completed session
-    StorageLog.endTime = Date.now();
+    Storage.endTime = Date.now();
     let sessionObj = {
-      start: StorageLog.startTime,
-      end: StorageLog.endTime,
-      log: StorageLog.msgLog,
+      start: Storage.startTime,
+      end: Storage.endTime,
+      log: Storage.msgLog,
     };
 
     const sessionLog = JSON.stringify(sessionObj);
     localStorage.setItem("Sparki_log", sessionLog);
 
     try {
-      uploadString(StorageLog.storageRef, sessionLog);
+      console.log("uploading session log to storage: ");
+      console.log(sessionLog);
+      uploadString(Storage.logStorageRef, sessionLog);
     } catch (err) {
-      console.error("Error uploading new content to firebase");
+      console.error("Error uploading Sparki log to firebase");
+      console.error(err);
+    }
+  };
+
+  static storeProposal = (proposal) => {
+    // record the completed session
+    Storage.endTime = Date.now();
+    let proposalObj = {
+      start: Storage.startTime,
+      end: Storage.endTime,
+    };
+
+    // copy the proposal into the object that will be uploaded
+    for (const section in proposal) {
+      if (proposal.hasOwnProperty(section)) {
+        proposalObj[section] = proposal[section];
+      }
+    }
+
+    const finalProposal = JSON.stringify(proposalObj);
+    localStorage.setItem("Sparki_proposal", proposal);
+
+    try {
+      console.log("uploading proposal to storage: ");
+      console.log(finalProposal);
+      uploadString(Storage.proposalStorageRef, finalProposal);
+    } catch (err) {
+      console.error("Error uploading proposal to firebase");
       console.error(err);
     }
   };
 }
 
-export default StorageLog;
+export default Storage;
