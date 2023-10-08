@@ -1,0 +1,28 @@
+.checklist-container-left {
+  border-radius: 3px;
+  position: absolute;
+  padding: 20px;
+  right: 400px;
+  top: -50px;
+  width: 350px;
+}
+
+.checklist-container-right {
+  border-radius: 3px;
+  position: absolute;
+  padding: 20px;
+  right: -350px;
+  top: -50px;
+  width: 350px;
+}
+
+.card-header {
+  text-align: center;
+}
+
+.progress-close-button {
+  height: 0.25em;
+  width: 0.25em;
+  margin: 0.25em 0;
+  float: right;
+}
