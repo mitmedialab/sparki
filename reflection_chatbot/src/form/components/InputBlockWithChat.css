@@ -64,8 +64,8 @@
   position: absolute;
   z-index: 1001;
   width: 400px;
-  height: 15rem;
-  line-height: 15rem;
+  height: 20rem;
+  line-height: 20rem;
   
   top: 7rem;
   right: 0;
@@ -87,7 +87,7 @@
 }
 
 .react-chatbot-kit-chat-inner-container {
-  height: 15rem;
+  height: 20rem;
 }
 
 .react-chatbot-kit-chat-header {
@@ -95,5 +95,5 @@
 }
 
 .react-chatbot-kit-chat-message-container {
-  height: 14.5rem;
+  height: 19.5rem;
 }
