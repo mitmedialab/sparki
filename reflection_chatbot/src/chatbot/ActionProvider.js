@@ -93,21 +93,16 @@ class ActionProvider {
   displayFromKnowledgeBase = async (category, userChoice) => {
     // Get the information needed from the knowledge base
     let kbContent = KnowledgeBase[category].content[userChoice];
-    let sectionContent = sessionStorage.getItem("sparki_" + category);
-    if (!sectionContent || sectionContent === "") sectionContent = "This section is empty.";
 
     if (userChoice === "feedback") {
-      // have chatbot give feedback
-      let gptResp = await GPT.getChattyGPTResponse(
-        this.stateRef.messages,
-        kbContent[0] + sectionContent,
-      );
-      this.say(gptResp);
+      this.sayAndShowWidget("Let's check out your progress so far", {
+        widget: "checklistWidget",
+      });
     } else {
       // remove option from menu
       this.removeMenuOption(userChoice);
 
-      // have chatbot say the content
+      // have chatbot say whatever is in the knowledge base
       for (let i = 0; i < kbContent.length - 1; i++) {
         this.say(kbContent[i]);
       }
@@ -138,14 +133,6 @@ class ActionProvider {
     }));
   };
 
-  setScratchCode = (code = "say [Hello world!]") => {
-    // update scratchCode in state to tell widget what code to display
-    this.setState((prev) => ({
-      ...prev,
-      scratchCode: code,
-    }));
-  };
-
   say = (botMsg = "hello world") => {
     this.sendBotMessage(this.createChatBotMessage(botMsg));
   };
@@ -155,17 +142,16 @@ class ActionProvider {
   saveUserMessage = (messageText) => {
     let id = this.stateRef.context.description;
     let userMsg = this.createClientMessage(messageText);
+
     // Store timestamp, user message, and context
-    // TODO decide what to do about widgets
     Storage.storeMessage(Date.now(), "User", id, messageText);
-    
+
     let prevLog = JSON.parse(sessionStorage.getItem("sparki_msglog_" + id));
     if (!prevLog) prevLog = [];
     sessionStorage.setItem(
       "sparki_msglog_" + id,
       JSON.stringify([...prevLog, userMsg])
     );
-
   };
   sendUserMessage = (messageText) => {
     let userMsg = this.createClientMessage(messageText);
@@ -179,8 +165,8 @@ class ActionProvider {
   };
   sendBotMessage = (botMsg) => {
     let id = this.stateRef.context.description;
+
     // Store timestamp, bot message, and context
-    // TODO decide what to do about widgets
     Storage.storeMessage(Date.now(), "Sparki", id, botMsg.message);
 
     let prevLog = JSON.parse(sessionStorage.getItem("sparki_msglog_" + id));
