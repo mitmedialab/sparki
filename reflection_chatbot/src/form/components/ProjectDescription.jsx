@@ -13,18 +13,24 @@ const ProjectDescription = () => {
   const onSave = (e) => {
     setFormStatus("Saving...");
 
-    let proposal = {"title": "", "description": "", "stakeholders": "", "positiveImpacts":"", "negativeImpacts":""};
-    for (const section in proposal) {
-      if (proposal.hasOwnProperty(section)) {
-        let content = sessionStorage.getItem("sparki_" + section);
-        if (content) proposal[section] = content;
+    let proposal = {};
+    const sections = [
+      "title",
+      "description",
+      "stakeholders",
+      "positiveImpacts",
+      "negativeImpacts",
+    ];
+    for (const section of sections) {
+      let sectionContent = sessionStorage.getItem("sparki_" + section);
+      if (sectionContent !== null) {
+        proposal[section] = sectionContent;
       }
     }
-
-    console.log(proposal);
-
-    // TODO export project info to slide or something
+    //console.log(proposal); // debug message
     Storage.storeProposal(proposal);
+
+    window.alert("Your work has been saved. It is OK to close the page now.");
     setFormStatus("Saved");
   };
 

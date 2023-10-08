@@ -89,7 +89,7 @@ class Storage {
     localStorage.setItem("Sparki_log", sessionLog);
 
     try {
-      console.log("uplaoding session log to storage: ");
+      console.log("uploading session log to storage: ");
       console.log(sessionLog);
       uploadString(Storage.logStorageRef, sessionLog);
     } catch (err) {
@@ -117,7 +117,7 @@ class Storage {
     localStorage.setItem("Sparki_proposal", proposal);
 
     try {
-      console.log("uplaoding proposal to storage: ");
+      console.log("uploading proposal to storage: ");
       console.log(finalProposal);
       uploadString(Storage.proposalStorageRef, finalProposal);
     } catch (err) {
