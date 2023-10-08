@@ -1,30 +1,29 @@
 import React from "react";
 
-import DynamicMenu from "./components/OptionsMenus/DynamicMenu.jsx"
-import InlineTutorialWidget from "./components/Tutorials/InlineTutorialWidget.jsx";
-//import TutorialWidget from "./components/Tutorials/TutorialWidget.jsx";
+import SparkiBotAvatar from "./components/bot_avatar/SparkiBotAvatar.jsx";
+import DynamicMenu from "./components/OptionsMenus/DynamicMenu.jsx";
+import ChecklistWidget from "./components/ChecklistWidget.jsx";
 
 const botName = "Sparki";
 
 const config = {
   botName: botName,
+  runInitialMessagesWithHistory: true,
   state: {},
+  customComponents: {
+    botAvatar: (props) => <SparkiBotAvatar {...props} />,
+  },
   widgets: [
-    // TODO important cards for stakeholders, benefits, risks, etc.
     {
-      widgetName: "helpCards",
-      widgetFunc: (props) => <InlineTutorialWidget {...props} />,
-      props: {
-        tutorialName: "helpDeck",
-      },
+      widgetName: "checklistWidget",
+      widgetFunc: (props) => <ChecklistWidget {...props} />,
+      mapStateToProps: ["context", "menuOptions"],
     },
     {
       widgetName: "dynamicOptionsMenu",
       widgetFunc: (props) => <DynamicMenu {...props} />,
       mapStateToProps: ["menuOptions"],
-    }
-
-    /** Add any additional widgets to this list */
+    },
   ],
 };
 
