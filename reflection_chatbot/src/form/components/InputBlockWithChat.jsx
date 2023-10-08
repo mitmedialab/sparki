@@ -1,5 +1,4 @@
-import React, { useMemo } from "react";
-import Spinner from "react-bootstrap/Spinner";
+import React, { useMemo, useState } from "react";
 
 import Chatbot from "react-chatbot-kit";
 import { createChatBotMessage } from "react-chatbot-kit";
@@ -21,9 +20,9 @@ const InputBlockWithChat = ({
   placeholderText,
   onChange,
 }) => {
-  const [buttonStatus, setButtonStatus] = React.useState("visible"); // loading / visible
-  const [chatStatus, setChatStatus] = React.useState("hidden"); // hidden / loading / visible
-  
+  const [chatStatus, setChatStatus] = useState("hidden"); // hidden / visible
+  const [updateProgressChecker, setUpdateProgressChecker] = useState(false);
+
   let initialMsg, initialContext, initialMenu;
   // setup the chatbot with the appropriate initializations
   if (id in KnowledgeBase) {
@@ -43,22 +42,23 @@ const InputBlockWithChat = ({
 
   const loadMessages = () => {
     let oldMessages = sessionStorage.getItem("sparki_msglog_" + id);
-    return JSON.parse(oldMessages);
+    let oldMessageArray = JSON.parse(oldMessages);
+    // Make sure the initial message is a part of the history
+    if (oldMessageArray) oldMessageArray.unshift(config.initialMessages[0]);
+    return oldMessageArray;
   };
+  
   // BUG Never seems to fire
-  const saveMessageHandler = (messages) => {
-    console.log("Saving previous messages");
-  };
+  //const saveMessageHandler = (messages) => {
+  //  console.log("Saving previous messages");
+  //};
 
   const onChangeHandler = () => {
-    if (chatStatus === "hidden") setButtonStatus("loading");
-    else if (chatStatus === "visible") setChatStatus("loading");
+    setUpdateProgressChecker(false);
   };
   const onInputValueEdited = (e) => {
-    // make chat and button visible
-    setButtonStatus("visible");
-    if (chatStatus === "loading") setChatStatus("visible");
-    
+    setUpdateProgressChecker(true);
+
     // call parent on change
     onChange(e);
   };
@@ -93,9 +93,9 @@ const InputBlockWithChat = ({
       {
         /* Text area or input box */
         {
-          textarea: (
-            <textarea
-              className="project-description-edit inplace-textarea"
+          input: ( // title is just an input
+            <input
+              className="project-description-edit inplace-input"
               placeholder={placeholderText}
               id={id}
               onChange={(e) => {
@@ -104,9 +104,9 @@ const InputBlockWithChat = ({
               }}
             />
           ),
-          input: (
-            <input
-              className="project-description-edit inplace-input"
+          textarea: ( // other blocks are text areas
+            <textarea
+              className="project-description-edit inplace-textarea"
               placeholder={placeholderText}
               id={id}
               onChange={(e) => {
@@ -119,26 +119,13 @@ const InputBlockWithChat = ({
       }
       {
         /* Chatbot open button */
-        {
-          visible: (
-            <button
-              className="chatbot-btn btn btn-primary"
-              type="button"
-              onClick={onChatButtonClick}
-            >
-              <i className="bi bi-chat-right-dots-fill" />
-            </button>
-          ),
-          loading: (
-            <button
-              className="chatbot-btn btn btn-primary"
-              type="button"
-              onClick={onChatButtonClick}
-            >
-              <Spinner animation="border" variant="light" size="sm" />
-            </button>
-          ),
-        }[buttonStatus]
+        <button
+          className="chatbot-btn btn btn-primary"
+          type="button"
+          onClick={onChatButtonClick}
+        >
+          <i className="bi bi-chat-right-dots-fill" />
+        </button>
       }
       {
         /* Chatbot component */
@@ -150,17 +137,7 @@ const InputBlockWithChat = ({
               actionProvider={ActionProvider}
               messageParser={MessageParser}
               messageHistory={loadMessages()}
-              saveMessages={saveMessageHandler}
             />
-            {chatStatus === "loading" && (
-              <div className="chat-overlay">
-                <Spinner
-                  className="chat-overlay-spinner"
-                  animation="border"
-                  variant="primary"
-                />
-              </div>
-            )}
           </div>
         )
       }
