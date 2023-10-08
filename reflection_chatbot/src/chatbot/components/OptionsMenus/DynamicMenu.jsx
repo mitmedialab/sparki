@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 //import GenericOptionsMenu from "../GenericOptionsMenu/GenericOptionsMenu";
 
 import "./DynamicMenu.css";
@@ -21,7 +21,7 @@ const DynamicMenu = ({ menuOptions, actionProvider }) => {
   }, []);
 
   return (
-    <div className="options-container" ref={options}>
+    <div className="options-container">
       {options.map((option) => (
         <button
           key={option.opId}
