@@ -28,6 +28,11 @@ function App() {
   const endSession = () => {
     clearInterval(saveInterval);
     Storage.uploadLog();
+
+    
+    // Have page confirm before reload
+    e.preventDefault();
+    e.returnValue = "";
   };
 
   return (
