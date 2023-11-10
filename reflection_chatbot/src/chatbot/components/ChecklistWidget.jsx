@@ -19,12 +19,6 @@ const ChecklistWidget = (props) => {
     negativeFeedback: "",
   });
 
-  // check for changes to parent
-  useEffect(() => {
-    let category = getCategory(props.context);
-    updateSectionContent(category);
-  });
-
   // if section is updated, rerun the progress checker
   useEffect(() => {
     let category = getCategory(props.context);
@@ -51,6 +45,7 @@ const ChecklistWidget = (props) => {
   };
 
   const updateSectionContent = (category) => {
+    console.log(category);
     let rubric = KnowledgeBase[category]["progressContent"];
     let newSectionContent = sessionStorage.getItem("sparki_" + category);
     if (!newSectionContent || newSectionContent === "")

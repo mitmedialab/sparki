@@ -35,7 +35,7 @@ const InputBlockWithChat = ({
   }
 
   config.initialMessages = [
-    createChatBotMessage(initialMsg, { widget: "dynamicOptionsMenu" }),
+    createChatBotMessage(initialMsg, { widget: "checklistWidget" }),
   ];
   config.state.context = initialContext;
   config.state.menuOptions = initialMenu;
