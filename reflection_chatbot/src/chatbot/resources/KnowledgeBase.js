@@ -3,7 +3,7 @@ import Contexts from "./BotContext";
 const KnowledgeBase = {
   description: {
     inputPlaceholder: `What does your project do?`,
-    initialChatMessage: `The project description should describe what problem your project solves and for whom. What does your project do?`,
+    initialChatMessage: `The project description should describe what problem your project solves and for whom.`,
     initialChatContext: Contexts.Description,
     initialChatMenu: [
       {text: `Show me an example`, content: `example`},
