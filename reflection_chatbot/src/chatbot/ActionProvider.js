@@ -2,7 +2,7 @@ import Contexts from "./resources/BotContext";
 import GPT from "../gpt/GPTController";
 import Storage from "../user_util/StorageLog";
 import Accounts from "../user_util/Accounts";
-import KnowledgeBase from "./resources/KnowledgeBase";
+import { KnowledgeBase, AutoKnowledgeBase } from "./resources/KnowledgeBase";
 
 const rephraseHeader = "Rephrase the following in your own voice:";
 
@@ -91,8 +91,15 @@ class ActionProvider {
     }
   };
   displayFromKnowledgeBase = async (category, userChoice) => {
+    // Determine if knowledge is about chatbot or self-driving vehicle project
+    let urlString = window.location.search;  
+
     // Get the information needed from the knowledge base
     let kbContent = KnowledgeBase[category].content[userChoice];
+    if (urlString.includes("project=auto")) {
+      kbContent = AutoKnowledgeBase[category].content[userChoice];
+    }
+    
     let sectionContent = sessionStorage.getItem("sparki_" + category);
     if (!sectionContent || sectionContent === "") sectionContent = "This section is empty.";
 

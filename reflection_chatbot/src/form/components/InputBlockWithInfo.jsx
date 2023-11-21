@@ -5,7 +5,7 @@ import debounce from "lodash.debounce";
 
 import "./InputBlockWithInfo.css";
 
-import KnowledgeBase from "../../chatbot/resources/KnowledgeBase";
+import { KnowledgeBase, AutoKnowledgeBase } from "../../chatbot/resources/KnowledgeBase";
 
 const InputBlockWithInfo = ({
   inputType,
@@ -17,14 +17,24 @@ const InputBlockWithInfo = ({
   const [infoboxStatus, setInfoboxStatus] = useState("hidden"); // hidden / visible
   const [checked, setChecked] = useState([]);
 
-  if (id in KnowledgeBase === false) {
+  // Determine if knowledge is about chatbot or self-driving vehicle project
+  let urlString = window.location.search;  
+
+  // Get the information needed from the knowledge base
+  let kbContent = KnowledgeBase;
+  if (urlString.includes("project=auto")) {
+    kbContent = AutoKnowledgeBase;
+  }
+
+  if (id in kbContent === false) {
     console.error("Got an invalid id on input block");
     console.error(id);
   }
 
   useEffect(() => {
     let initCheckedVar = [];
-    for (let i=0; i<KnowledgeBase[id]["progressContent"].length; i++) {
+
+    for (let i=0; i<kbContent[id]["progressContent"].length; i++) {
       initCheckedVar.push(false);
     }
     setChecked(initCheckedVar);
@@ -110,13 +120,13 @@ const InputBlockWithInfo = ({
         infoboxStatus !== "hidden" && (
           <Accordion>
             <Accordion.Item
-              eventKey={KnowledgeBase[id]["contentHeaders"].length}
+              eventKey={kbContent[id]["contentHeaders"].length}
             >
               <Accordion.Header>Progress checklist</Accordion.Header>
               <Accordion.Body>
                 Check off these goals as you complete them:
                 <ul class="progress-list">
-                  {KnowledgeBase[id]["progressContent"].map((x, i) => (
+                  {kbContent[id]["progressContent"].map((x, i) => (
                     <li class="progress-list-item">
                       <label htmlFor={"item" + (i + 1)}>
                         <input
@@ -134,11 +144,11 @@ const InputBlockWithInfo = ({
                 </ul>
               </Accordion.Body>
             </Accordion.Item>
-            {KnowledgeBase[id]["contentHeaders"].map((x, i) => (
+            {kbContent[id]["contentHeaders"].map((x, i) => (
               <Accordion.Item eventKey={i}>
                 <Accordion.Header>{x.text}</Accordion.Header>
                 <Accordion.Body>
-                  {KnowledgeBase[id]["content"][x.content]}
+                  {kbContent[id]["content"][x.content]}
                 </Accordion.Body>
               </Accordion.Item>
             ))}

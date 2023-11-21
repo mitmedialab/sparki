@@ -1,13 +1,22 @@
 import React, { useMemo, useState } from "react";
 import debounce from "lodash.debounce";
 
-import KnowledgeBase from "../../chatbot/resources/KnowledgeBase";
+import { KnowledgeBase, AutoKnowledgeBase } from "../../chatbot/resources/KnowledgeBase";
 import Storage from "../../user_util/StorageLog";
 
 import "./ProjectDescription.css";
 import InputWithInfo from "./InputBlockWithInfo";
 
 const ProjectDescription = () => {
+  // Determine if knowledge is about chatbot or self-driving vehicle project
+  let urlString = window.location.search;  
+
+  // Get the information needed from the knowledge base
+  let kbContent = KnowledgeBase;
+  if (urlString.includes("project=auto")) {
+    kbContent = AutoKnowledgeBase;
+  }
+
   const [formStatus, setFormStatus] = useState("Saved");
 
   const onSave = (e) => {
@@ -71,7 +80,7 @@ const ProjectDescription = () => {
           inputType="textarea"
           label="Description"
           id="description"
-          placeholderText={KnowledgeBase[`description`].inputPlaceholder}
+          placeholderText={kbContent[`description`].inputPlaceholder}
           onChange={(e) => {
             handleFormChange(e);
           }}
@@ -80,7 +89,7 @@ const ProjectDescription = () => {
           inputType="textarea"
           label="Stakeholders"
           id="stakeholders"
-          placeholderText={KnowledgeBase[`stakeholders`].inputPlaceholder}
+          placeholderText={kbContent[`stakeholders`].inputPlaceholder}
           onChange={(e) => {
             handleFormChange(e);
           }}
@@ -94,7 +103,7 @@ const ProjectDescription = () => {
               label="Positive"
               id="positiveImpacts"
               placeholderText={
-                KnowledgeBase[`positiveImpacts`].inputPlaceholder
+                kbContent[`positiveImpacts`].inputPlaceholder
               }
               onChange={(e) => {
                 handleFormChange(e);
@@ -107,7 +116,7 @@ const ProjectDescription = () => {
               label="Negative"
               id="negativeImpacts"
               placeholderText={
-                KnowledgeBase[`negativeImpacts`].inputPlaceholder
+                kbContent[`negativeImpacts`].inputPlaceholder
               }
               onChange={(e) => {
                 handleFormChange(e);
