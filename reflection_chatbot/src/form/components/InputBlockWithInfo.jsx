@@ -114,7 +114,7 @@ const InputBlockWithInfo = ({
             >
               <Accordion.Header>Progress checklist</Accordion.Header>
               <Accordion.Body>
-                Try to reach these goals:
+                Check off these goals as you complete them:
                 <ul class="progress-list">
                   {KnowledgeBase[id]["progressContent"].map((x, i) => (
                     <li class="progress-list-item">

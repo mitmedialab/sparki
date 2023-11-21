@@ -1,5 +1,3 @@
-import Contexts from "./BotContext";
-
 const KnowledgeBase = {
   description: {
     inputPlaceholder: `What does your project do?`,
@@ -45,7 +43,7 @@ const KnowledgeBase = {
     contentHeaders: [
       {text: `What are positive impacts?`, content: `positiveImpacts`},
       {text: `Show me an example`, content: `example`},
-      {text: `What are common benefits AI chatbots?`, content: `common`},
+      {text: `What are common benefits of AI chatbots?`, content: `common`},
       {text: `What is a high impact project?`, content: `impact`},
       {text: `How do I use design justice?`, content: `designJustice`},
     ],
@@ -76,7 +74,7 @@ const KnowledgeBase = {
       `State whether your project is low, medium, or high risk`,
     ],
     content: {
-      negativeImpacts: `Negative impacts are ways that your projects might (unintentionally!) harm your stakeholders or put them at risk.`,
+      negativeImpacts: `Negative impacts are ways that your projects might (even unintentionally!) harm your stakeholders or put them at risk.`,
       example: `The potential harms of an AI counselor are that teenagers could put too much trust in them, human counselors could have their jobs threatened, and this could lead to students who need more support not getting the resources they need. Teens who don't have a lot of people to talk to and need support are most at risk. This would be a pretty high risk project which would need a lot of oversight.`,
       common: `Common negative impacts of chatbots for mental health are that people can rely too much on flawed systems, the chatbot might unfairly treat some students differently than others, or people could feel their privacy is compromised by data collection. Also the existence of chatbots for wellbeing could threaten the jobs of healthcare professionals. Do you think any of these relate to your project?`,
       designJustice: `It is important to protect people who might be most at risk of harm. Design justice means doing yor best to reduce harm. Do you have any ideas for reducing harm?`,
