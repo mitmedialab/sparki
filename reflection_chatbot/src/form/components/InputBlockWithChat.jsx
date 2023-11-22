@@ -8,7 +8,7 @@ import debounce from "lodash.debounce";
 import ActionProvider from "../../chatbot/ActionProvider";
 import MessageParser from "../../chatbot/MessageParser";
 import config from "../../chatbot/config";
-import KnowledgeBase from "../../chatbot/resources/KnowledgeBase";
+import { KnowledgeBase, AutoKnowledgeBase } from "../../chatbot/resources/KnowledgeBase";
 
 import "react-chatbot-kit/build/main.css";
 import "./InputBlockWithChat.css";
@@ -24,11 +24,20 @@ const InputBlockWithChat = ({
   const [updateProgressChecker, setUpdateProgressChecker] = useState(false);
 
   let initialMsg, initialContext, initialMenu;
+
+   // Determine if knowledge is about chatbot or self-driving vehicle project
+   let urlString = window.location.search;  
+
+   // Get the information needed from the knowledge base
+   let kbContent = KnowledgeBase;
+   if (urlString.includes("project=auto")) {
+     kbContent = AutoKnowledgeBase;
+   }
   // setup the chatbot with the appropriate initializations
-  if (id in KnowledgeBase) {
-    initialMsg = KnowledgeBase[id].initialChatMessage;
-    initialContext = KnowledgeBase[id].initialChatContext;
-    initialMenu = KnowledgeBase[id].initialChatMenu;
+  if (id in kbContent) {
+    initialMsg = kbContent[id].initialChatMessage;
+    initialContext = kbContent[id].initialChatContext;
+    initialMenu = kbContent[id].initialChatMenu;
   } else {
     console.error("Got an invalid id on input block");
     console.error(id);

@@ -6,7 +6,7 @@ import DynamicMenu from "./OptionsMenus/DynamicMenu";
 
 import GPT from "../../gpt/GPTController";
 import Contexts from "../resources/BotContext";
-import KnowledgeBase from "../resources/KnowledgeBase";
+import { KnowledgeBase, AutoKnowledgeBase } from "../resources/KnowledgeBase";
 
 import "./ChecklistWidget.css";
 
@@ -18,6 +18,15 @@ const ChecklistWidget = (props) => {
     positiveFeedback: "",
     negativeFeedback: "",
   });
+
+   // Determine if knowledge is about chatbot or self-driving vehicle project
+   let urlString = window.location.search;  
+
+   // Get the information needed from the knowledge base
+   let kbContent = KnowledgeBase;
+   if (urlString.includes("project=auto")) {
+     kbContent = AutoKnowledgeBase;
+   }
 
   // if section is updated, rerun the progress checker
   useEffect(() => {
@@ -46,7 +55,7 @@ const ChecklistWidget = (props) => {
 
   const updateSectionContent = (category) => {
     console.log(category);
-    let rubric = KnowledgeBase[category]["progressContent"];
+    let rubric = kbContent[category]["progressContent"];
     let newSectionContent = sessionStorage.getItem("sparki_" + category);
     if (!newSectionContent || newSectionContent === "")
       newSectionContent = "null";
@@ -61,7 +70,7 @@ const ChecklistWidget = (props) => {
     // get input from GPT
     let gptResp = await GPT.getChattyGPTResponse(
       [], // don't send anything in message log
-      KnowledgeBase[category].content["feedback"][0] + sectionContent
+      kbContent[category].content["feedback"][0] + sectionContent
     );
     console.log(`"${sectionContent}"`);
     //console.log(gptResp); // debug message
