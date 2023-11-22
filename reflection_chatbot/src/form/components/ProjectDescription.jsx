@@ -1,7 +1,10 @@
 import React, { useMemo, useState } from "react";
-import debounce from "lodash.debounce";
+//import debounce from "lodash.debounce";
 
-import { KnowledgeBase, AutoKnowledgeBase } from "../../chatbot/resources/KnowledgeBase";
+import {
+  KnowledgeBase,
+  AutoKnowledgeBase,
+} from "../../chatbot/resources/KnowledgeBase";
 import Storage from "../../user_util/StorageLog";
 
 import "./ProjectDescription.css";
@@ -9,9 +12,10 @@ import InputAndChat from "./InputBlockWithChat";
 
 const ProjectDescription = () => {
   const [formStatus, setFormStatus] = useState("Saved");
+  sessionStorage.setItem("saved?", formStatus === "Saved" ? "true" : "false");
 
   // Determine if knowledge is about chatbot or self-driving vehicle project
-  let urlString = window.location.search;  
+  let urlString = window.location.search;
 
   // Get the information needed from the knowledge base
   let kbContent = KnowledgeBase;
@@ -41,6 +45,7 @@ const ProjectDescription = () => {
 
     window.alert("Your work has been saved. It is OK to close the page now.");
     setFormStatus("Saved");
+    sessionStorage.setItem("saved?", "true");
   };
 
   const handleFormChange = (e) => {
@@ -51,17 +56,14 @@ const ProjectDescription = () => {
     // save updated text in session storage
     sessionStorage.setItem("sparki_" + section, newValue);
 
+    setFormStatus("Save");
+    // set flag to save
+    sessionStorage.setItem("saved?", "false");
+
     // save updated text in session log
     Storage.storeMessage(Date.now(), "User", section, updatedItem);
     //console.log(`Updated section ${section} to ${newValue}`); // debug message
-
-    setFormStatus("Save");
   };
-
-  const debouncedChangeHandler = useMemo(
-    () => debounce(handleFormChange, 300),
-    []
-  );
 
   return (
     <div className="container-sm mt-5">
@@ -72,7 +74,7 @@ const ProjectDescription = () => {
           placeholder="Project Title"
           id="title"
           onChange={(e) => {
-            debouncedChangeHandler(e);
+            handleFormChange(e);
           }}
         />
         <InputAndChat
@@ -101,9 +103,7 @@ const ProjectDescription = () => {
               inputType="textarea"
               label="Positive"
               id="positiveImpacts"
-              placeholderText={
-                kbContent[`positiveImpacts`].inputPlaceholder
-              }
+              placeholderText={kbContent[`positiveImpacts`].inputPlaceholder}
               onChange={(e) => {
                 handleFormChange(e);
               }}
@@ -114,9 +114,7 @@ const ProjectDescription = () => {
               inputType="textarea"
               label="Negative"
               id="negativeImpacts"
-              placeholderText={
-                kbContent[`negativeImpacts`].inputPlaceholder
-              }
+              placeholderText={kbContent[`negativeImpacts`].inputPlaceholder}
               onChange={(e) => {
                 handleFormChange(e);
               }}

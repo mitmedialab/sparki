@@ -12,6 +12,8 @@ import "./App.css";
 
 function App() {
   const [apiKey, setApiKey] = useState(Accounts.getSecretKey());
+
+  // Save log to firebase every minute
   const saveInterval = setInterval(Storage.uploadLog, 60 * 1000);
 
   useEffect(() => {
@@ -29,9 +31,11 @@ function App() {
     clearInterval(saveInterval);
     Storage.uploadLog();
 
-    // Have page confirm before reload
-    e.preventDefault();
-    e.returnValue = "";
+    if (sessionStorage.getItem("saved?") == "false") {
+      // Have page confirm before reload
+      e.preventDefault();
+      e.returnValue = "";
+    }
   };
 
   return (
