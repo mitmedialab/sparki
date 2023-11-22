@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/sparki/ai-project/static/css/main.7cefc3e7.css",
-    "main.js": "/sparki/ai-project/static/js/main.57b9a14b.js",
+    "main.js": "/sparki/ai-project/static/js/main.1e37fc3a.js",
     "static/js/787.bc74c74e.chunk.js": "/sparki/ai-project/static/js/787.bc74c74e.chunk.js",
     "static/media/bootstrap-icons.woff?": "/sparki/ai-project/static/media/bootstrap-icons.6959d0d983ee318f8880.woff",
     "static/media/bootstrap-icons.woff2?": "/sparki/ai-project/static/media/bootstrap-icons.b2e5aab643c6f0fd2da6.woff2",
     "index.html": "/sparki/ai-project/index.html",
     "main.7cefc3e7.css.map": "/sparki/ai-project/static/css/main.7cefc3e7.css.map",
-    "main.57b9a14b.js.map": "/sparki/ai-project/static/js/main.57b9a14b.js.map",
+    "main.1e37fc3a.js.map": "/sparki/ai-project/static/js/main.1e37fc3a.js.map",
     "787.bc74c74e.chunk.js.map": "/sparki/ai-project/static/js/787.bc74c74e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7cefc3e7.css",
-    "static/js/main.57b9a14b.js"
+    "static/js/main.1e37fc3a.js"
   ]
 }
