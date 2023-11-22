@@ -29,10 +29,11 @@ function App() {
     clearInterval(saveInterval);
     Storage.uploadLog();
 
-    
-    // Have page confirm before reload
-    e.preventDefault();
-    e.returnValue = "";
+    if (sessionStorage.getItem("saved?") == "false") {
+      // Have page confirm before reload
+      e.preventDefault();
+      e.returnValue = "";
+    }
   };
 
   return (

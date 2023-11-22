@@ -18,6 +18,7 @@ const ProjectDescription = () => {
   }
 
   const [formStatus, setFormStatus] = useState("Saved");
+  sessionStorage.setItem("saved?", formStatus === "Saved" ? "true" : "false");
 
   const onSave = (e) => {
     setFormStatus("Saving...");
