@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/sparki/bi-project/static/css/main.1a69bb30.css",
-    "main.js": "/sparki/bi-project/static/js/main.f31b3e90.js",
+    "main.js": "/sparki/bi-project/static/js/main.e3c498ce.js",
     "static/js/787.bc74c74e.chunk.js": "/sparki/bi-project/static/js/787.bc74c74e.chunk.js",
     "static/media/bootstrap-icons.woff?": "/sparki/bi-project/static/media/bootstrap-icons.6959d0d983ee318f8880.woff",
     "static/media/bootstrap-icons.woff2?": "/sparki/bi-project/static/media/bootstrap-icons.b2e5aab643c6f0fd2da6.woff2",
     "index.html": "/sparki/bi-project/index.html",
     "main.1a69bb30.css.map": "/sparki/bi-project/static/css/main.1a69bb30.css.map",
-    "main.f31b3e90.js.map": "/sparki/bi-project/static/js/main.f31b3e90.js.map",
+    "main.e3c498ce.js.map": "/sparki/bi-project/static/js/main.e3c498ce.js.map",
     "787.bc74c74e.chunk.js.map": "/sparki/bi-project/static/js/787.bc74c74e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1a69bb30.css",
-    "static/js/main.f31b3e90.js"
+    "static/js/main.e3c498ce.js"
   ]
 }
