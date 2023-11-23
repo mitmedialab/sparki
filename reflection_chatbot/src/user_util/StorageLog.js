@@ -30,14 +30,14 @@ class Storage {
       const storage = getStorage(app);
       const logStoragePath =
         accountName +
-        "/sparkilog-" +
+        "/sparkinoteslog-" +
         Storage.dateString(Storage.startTime) +
         ".json";
       Storage.logStorageRef = ref(storage, logStoragePath);
 
       const proposalStoragePath =
         accountName +
-        "/proposal-" +
+        "/proposal-sparkinotes" +
         Storage.dateString(Storage.startTime) +
         ".json";
       Storage.proposalStorageRef = ref(storage, proposalStoragePath);
