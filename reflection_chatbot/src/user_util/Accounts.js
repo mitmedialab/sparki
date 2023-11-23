@@ -22,7 +22,7 @@ class Accounts {
         try {
           let accountInfo = CryptoJS.AES.decrypt(
             resp.accountInfo,
-            username
+            "sparki"
           ).toString(CryptoJS.enc.Utf8);
           const account = JSON.parse(accountInfo);
           // save key for future sessions
