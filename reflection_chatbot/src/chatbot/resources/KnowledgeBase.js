@@ -272,7 +272,7 @@ export const AutoKnowledgeBase = {
         `Does this seem similar to your project idea?`
       ],
       ideas: [
-        `Common negative impacts of self-driving vehicles are that people might rely on them too much and theyn they'll make mistakes, the vehicles might only benefit people who are wealthier while making transportation harder for people with less, and these vehicles might take jobs.`,
+        `Common negative impacts of self-driving vehicles are that people might rely on them too much and then they'll make mistakes, the vehicles might only benefit people who are wealthier while making transportation harder for people with less, and these vehicles might take jobs.`,
         `Do any of these relate to your project?`,
       ],
       stakeholders: [
