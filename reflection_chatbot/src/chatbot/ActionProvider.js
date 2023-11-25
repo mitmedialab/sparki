@@ -62,59 +62,116 @@ class ActionProvider {
       this.handleStart();
     }
   };
-  handleUserMessage = async (userMsg) => {
-    this.saveUserMessage(userMsg);
-    let resp = await GPT.getChattyGPTResponse(this.stateRef.messages, userMsg);
-    this.say(resp);
-  };
-
-  /**  AI Design Actions   **/
-  handleMenuOption = async (userChoice) => {
-    // handle button press appropriately
+  getCategory = () => {
     switch (this.stateRef.context) {
       case Contexts.Description:
-        this.displayFromKnowledgeBase("description", userChoice);
-        break;
+        return "description";
       case Contexts.Stakeholders:
-        this.displayFromKnowledgeBase("stakeholders", userChoice);
-        break;
+        return "stakeholders";
       case Contexts.NegativeImpacts:
-        this.displayFromKnowledgeBase("negativeImpacts", userChoice);
-        break;
+        return "negativeImpacts";
       case Contexts.PositiveImpacts:
-        this.displayFromKnowledgeBase("positiveImpacts", userChoice);
-        break;
+        return "positiveImpacts";
       default:
         console.error("Ended up in an unknown state");
         console.error(this.stateRef.context);
         break;
     }
   };
+  handleUserMessage = async (userMsg) => {
+    // add user message to log
+    this.saveUserMessage(userMsg);
+
+    // Use knowledge base and project context to respond to user inquiry
+    let category = this.getCategory();
+    let projectDescription = sessionStorage.getItem("sparki_description");
+    if (projectDescription) {
+      projectDescription = `Here is my project description: ${projectDescription} `;
+      if (category !== "description") {
+        let sectionContent = sessionStorage.getItem("sparki_" + category);
+        if (sectionContent) {
+          projectDescription += `I am working on the ${category} section. Here is what I have so far: ${sectionContent}`;
+        }
+      }
+      // give GPT context about project + info from the knowledge base
+      userMsg = `${projectDescription}. Help me answer this question: "${userMsg}"`;
+    }
+
+    // get response from GPT
+    let resp = await GPT.getChattyGPTResponse(this.stateRef.messages, userMsg);
+
+    // display response in chatbot
+    this.say(resp);
+  };
+
+  /**  AI Design Actions   **/
+  handleMenuOption = async (userChoice) => {
+    // handle button press appropriately
+    this.displayFromKnowledgeBase(this.getCategory(), userChoice);
+  };
   displayFromKnowledgeBase = async (category, userChoice) => {
-    // Determine if knowledge is about chatbot or self-driving vehicle project
-    let urlString = window.location.search;  
-  
+    // Determine whether project is about chatbot or self-driving vehicle project
+    //   to get relevant knowledge base content
+    let urlString = window.location.search;
     // Get the information needed from the knowledge base
     let kbContent = KnowledgeBase[category].content[userChoice];
     if (urlString.includes("project=auto")) {
       kbContent = AutoKnowledgeBase[category].content[userChoice];
     }
 
+    // If user is asking for feedback, launch progress checklist
     if (userChoice === "feedback") {
       this.sayAndShowWidget("Let's check out your progress so far", {
         widget: "checklistWidget",
       });
-    } else {
-      // remove option from menu
-      this.removeMenuOption(userChoice);
-
-      // have chatbot say whatever is in the knowledge base
+    } else if (userChoice === "example") {
+      // If user asks for an example, use the KnowledgeBase example
       for (let i = 0; i < kbContent.length - 1; i++) {
         this.say(kbContent[i]);
       }
       this.sayAndShowWidget(kbContent[kbContent.length - 1], {
         widget: "dynamicOptionsMenu",
       });
+    } else {
+      // If the user asks for anything else, have GPT augment KnowledgeBase content
+      // First get project context
+      let projectDescription = sessionStorage.getItem("sparki_description");
+      if (projectDescription) {
+        projectDescription = `Here is my project description: ${projectDescription} `;
+        if (category !== "description") {
+          let sectionContent = sessionStorage.getItem("sparki_" + category);
+          if (sectionContent) {
+            projectDescription += `I am working on the ${category} section. Here is what I have so far: ${sectionContent}`;
+          }
+        }
+
+        // give GPT context about project + info from the knowledge base
+        let gptPrompt = `${projectDescription} Rephrase the following information in terms of my project: "${kbContent.join(
+          " "
+        )}".`;
+
+        console.log(gptPrompt);
+        // have GPT construct new response based on context
+        let resp = await GPT.getChattyGPTResponse(
+          this.stateRef.messages,
+          gptPrompt
+        );
+        //console.log(resp);
+
+        // have GPT use whatever is in the knoweldge base to construct response
+        this.sayAndShowWidget(resp, {
+          widget: "dynamicOptionsMenu",
+        });
+      } else {
+        // have neither project description nor any section content
+        // say what's in the knowledge base
+        for (let i = 0; i < kbContent.length - 1; i++) {
+          this.say(kbContent[i]);
+        }
+        this.sayAndShowWidget(kbContent[kbContent.length - 1], {
+          widget: "dynamicOptionsMenu",
+        });
+      }
     }
   };
 
