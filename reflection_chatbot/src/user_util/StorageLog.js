@@ -73,8 +73,7 @@ class Storage {
         timestamp,
       });
     }
-
-    console.log(Storage.msgLog); // debug message
+    //console.log(Storage.msgLog); // debug message
   };
 
   static uploadLog = () => {
