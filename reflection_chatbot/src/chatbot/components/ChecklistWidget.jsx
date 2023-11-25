@@ -11,7 +11,7 @@ import { KnowledgeBase, AutoKnowledgeBase } from "../resources/KnowledgeBase";
 import "./ChecklistWidget.css";
 
 const ChecklistWidget = (props) => {
-  console.log(props);
+  //console.log(props);  // debug message
   const [sectionContent, setSectionContent] = useState("null");
   const [progressChecklist, setProgressChecklist] = useState({
     Items: [],
@@ -72,13 +72,13 @@ const ChecklistWidget = (props) => {
       [], // don't send anything in message log
       kbContent[category].content["feedback"][0] + sectionContent
     );
-    console.log(`"${sectionContent}"`);
+    // console.log(`"${sectionContent}"`); // debug message
     //console.log(gptResp); // debug message
 
     if (gptResp) {
       let newChecklist = parseGptResp(gptResp, rubric);
-      console.log(gptResp);
-      console.log(newChecklist);
+      //console.log(gptResp); // debug message
+      //console.log(newChecklist); // debug message
 
       // update progress checklist
       setProgressChecklist(newChecklist);
