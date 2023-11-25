@@ -120,7 +120,7 @@ export const AutoKnowledgeBase = {
     content: {
       stakeholders: `Stakeholders are anyone that might be interested in your project and its outcomes. Try to list at least three.`,
       example:
-        `Three key stakeholders for my self-driving vehicles for low-income individuals are people who in the community who use the roads the vehicles will drive on, people without access to cars, and people with less knowledge about and access to technology. The most vulnerable stakeholders are people without a lot of knowledge and access to technology because they might be left out of a new, high-tech transportation system.`,
+        `Three key stakeholders for my self-driving vehicles for low-income individuals are (1) people in the community who use the roads the vehicles will drive on, (2) people without access to cars, and (3) people with less knowledge about and access to technology. The most vulnerable stakeholders are people without a lot of knowledge and access to technology because they might be left out of a new, high-tech transportation system.`,
       vulnerable:
         `Vulnerable stakeholders are the people who are most at risk and have the least control over the algorithm's impact on themselves. Think, who may be left out of new technology creation or harmed if there are problems with the technology?`,
     },
