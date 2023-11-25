@@ -5,7 +5,11 @@ import debounce from "lodash.debounce";
 
 import "./InputBlockWithInfo.css";
 
-import { KnowledgeBase, AutoKnowledgeBase } from "../../chatbot/resources/KnowledgeBase";
+import {
+  KnowledgeBase,
+  AutoKnowledgeBase,
+} from "../../chatbot/resources/KnowledgeBase";
+import Storage from "../../user_util/StorageLog";
 
 const InputBlockWithInfo = ({
   inputType,
@@ -18,7 +22,7 @@ const InputBlockWithInfo = ({
   const [checked, setChecked] = useState([]);
 
   // Determine if knowledge is about chatbot or self-driving vehicle project
-  let urlString = window.location.search;  
+  let urlString = window.location.search;
 
   // Get the information needed from the knowledge base
   let kbContent = KnowledgeBase;
@@ -34,7 +38,7 @@ const InputBlockWithInfo = ({
   useEffect(() => {
     let initCheckedVar = [];
 
-    for (let i=0; i<kbContent[id]["progressContent"].length; i++) {
+    for (let i = 0; i < kbContent[id]["progressContent"].length; i++) {
       initCheckedVar.push(false);
     }
     setChecked(initCheckedVar);
@@ -48,6 +52,12 @@ const InputBlockWithInfo = ({
     () => debounce(onInputValueEdited, 300),
     [infoboxStatus]
   );
+
+  const onAccordionItemSelected = (e) => {
+    console.log(e.target.innerText);
+    // Log that user opened Sparki notes
+    Storage.storeMessage(Date.now(), "User", id, `Clicked ${id}, ${e.target.innerText}`);
+  };
 
   const onInfoboxButtonClick = () => {
     // change visibillity of infobox
@@ -67,10 +77,12 @@ const InputBlockWithInfo = ({
   };
 
   const toggleCheckbox = (e) => {
+    // Get index of checkbox (appended to end of component's name)
     let itemNum = parseInt(e.target.value.slice(-1));
+
+    // Update the checked state variable
     let newCheckedVar = [...checked];
     newCheckedVar[itemNum] = !newCheckedVar[itemNum];
-
     //console.log(newCheckedVar); // debug message
     setChecked(newCheckedVar);
   };
@@ -121,6 +133,7 @@ const InputBlockWithInfo = ({
           <Accordion>
             <Accordion.Item
               eventKey={kbContent[id]["contentHeaders"].length}
+              onClick={onAccordionItemSelected}
             >
               <Accordion.Header>Progress checklist</Accordion.Header>
               <Accordion.Body>
@@ -145,7 +158,7 @@ const InputBlockWithInfo = ({
               </Accordion.Body>
             </Accordion.Item>
             {kbContent[id]["contentHeaders"].map((x, i) => (
-              <Accordion.Item eventKey={i}>
+              <Accordion.Item eventKey={i} onClick={onAccordionItemSelected}>
                 <Accordion.Header>{x.text}</Accordion.Header>
                 <Accordion.Body>
                   {kbContent[id]["content"][x.content]}
