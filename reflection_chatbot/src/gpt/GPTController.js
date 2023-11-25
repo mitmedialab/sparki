@@ -17,22 +17,6 @@ class GPTController {
     "positiveImpacts",
     "negativeImpacts",
   ];
-  static getUpdatedProjectState = (msgLog) => {
-    // check if there is anything in the project details
-    for (let i = 0; i < this.projectSections.length; i++) {
-      let id = this.projectSections[i];
-
-      // if details have been updated, and add client message with the update
-      let savedDetail = sessionStorage.getItem("sparki_" + id);
-      if (savedDetail) {
-        msgLog.push({
-          content: savedDetail,
-          role: "user",
-        });
-      }
-    }
-    return msgLog;
-  };
 
   // Chatbot message format message: "", role: "user | bot"
   // ChatGPT message format content: "", role: "system | user | assistant"
@@ -52,7 +36,6 @@ class GPTController {
       resp = `prompt: ${newMsg}`;
     } else {
       let completeLog = this.botToGPTMessages(msgLog);
-      completeLog = this.getUpdatedProjectState(completeLog);
       completeLog.push({
         content: newMsg + ". Keep your response to 20 words or less.",
         role: "user",
