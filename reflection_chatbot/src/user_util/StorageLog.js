@@ -65,7 +65,6 @@ class Storage {
   };
 
   static storeMessage = (timestamp, author, context, message) => {
-    // TODO test to make sure messages don't get dropped
     if (Storage.msgLog) {
       Storage.msgLog.push({
         author,
